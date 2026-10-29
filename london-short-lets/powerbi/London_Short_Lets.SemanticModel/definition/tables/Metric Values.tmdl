@@ -1,0 +1,200 @@
+/// The published metric table: one row per metric, dimension and member, with numerator and denominator. Every consumer (web page, Power BI, Excel) reads this same table.
+table 'Metric Values'
+
+	/// The one generic measure: counts and sums (no denominator) add up; ratios sum their numerators and denominators, then divide.
+	measure 'Metric Value' =
+			VAR num = SUM ( 'Metric Values'[numerator] )
+			VAR den = SUM ( 'Metric Values'[denominator] )
+			RETURN IF ( ISBLANK ( den ), num, DIVIDE ( num, den ) )
+		formatString: #,0.###
+		displayFolder: Generic
+
+	/// The same value shown as a percentage, for ratio metrics.
+	measure 'Metric Value (Percent)' = [Metric Value]
+		formatString: 0.0%
+		displayFolder: Generic
+
+	/// Every listing in the snapshot.
+	measure Listings = CALCULATE ( [Metric Value], 'Metric Values'[metric_id] = "listings", 'Metric Values'[dimension] = "total" )
+		formatString: #,0
+		displayFolder: Headline
+
+	/// Listings with a review in the last 12 months.
+	measure 'Active Listings' = CALCULATE ( [Metric Value], 'Metric Values'[metric_id] = "active_listings", 'Metric Values'[dimension] = "total" )
+		formatString: #,0
+		displayFolder: Headline
+
+	/// Certified occupancy: modelled booked nights / 365, active listings.
+	measure 'Occupancy Rate' = CALCULATE ( [Metric Value], 'Metric Values'[metric_id] = "occupancy_rate", 'Metric Values'[dimension] = "total" )
+		formatString: 0.0%
+		displayFolder: Headline
+
+	/// Active short-stay entire homes modelled above 90 nights.
+	measure 'Entire Homes Over 90 Nights' = CALCULATE ( [Metric Value], 'Metric Values'[metric_id] = "over_90_homes", 'Metric Values'[dimension] = "total" )
+		formatString: #,0
+		displayFolder: Headline
+
+	/// Over-90 entire homes as a share of active short-stay entire homes.
+	measure 'Share Over 90 Nights' = CALCULATE ( [Metric Value], 'Metric Values'[metric_id] = "over_90_share", 'Metric Values'[dimension] = "total" )
+		formatString: 0.0%
+		displayFolder: Headline
+
+	/// Over-90 entire homes, borough rows only.
+	measure 'Over 90 Nights by Borough' = CALCULATE ( [Metric Value], 'Metric Values'[metric_id] = "over_90_homes", 'Metric Values'[dimension] = "borough" )
+		formatString: #,0
+		displayFolder: Breakdowns
+
+	/// Over-90 share, borough rows only.
+	measure 'Share Over 90 by Borough' = CALCULATE ( [Metric Value], 'Metric Values'[metric_id] = "over_90_share", 'Metric Values'[dimension] = "borough" )
+		formatString: 0.0%
+		displayFolder: Breakdowns
+
+	/// Active listings, borough rows only.
+	measure 'Active Listings by Borough' = CALCULATE ( [Metric Value], 'Metric Values'[metric_id] = "active_listings", 'Metric Values'[dimension] = "borough" )
+		formatString: #,0
+		displayFolder: Breakdowns
+
+	/// Certified occupancy, borough rows only.
+	measure 'Occupancy by Borough' = CALCULATE ( [Metric Value], 'Metric Values'[metric_id] = "occupancy_rate", 'Metric Values'[dimension] = "borough" )
+		formatString: 0.0%
+		displayFolder: Breakdowns
+
+	/// Over-90 entire homes by how many listings the host has.
+	measure 'Over 90 Nights by Host Size' = CALCULATE ( [Metric Value], 'Metric Values'[metric_id] = "over_90_homes", 'Metric Values'[dimension] = "host_size" )
+		formatString: #,0
+		displayFolder: Breakdowns
+
+	/// London's value for each occupancy definition, certified or not: put Definitions[name] on the axis.
+	measure 'Occupancy (Any Definition)' = CALCULATE ( [Metric Value], 'Metric Values'[dimension] = "total", KEEPFILTERS ( CONTAINSSTRING ( 'Metric Values'[metric_id], "occupancy" ) ) )
+		formatString: 0.0%
+		displayFolder: Definitions
+
+	/// Share of London's over-90 entire homes in the five boroughs with the most.
+	measure 'Top 5 Borough Share' =
+			VAR boroughs = FILTER ( ALL ( 'Metric Values'[member], 'Metric Values'[dimension], 'Metric Values'[metric_id] ),
+			    'Metric Values'[metric_id] = "over_90_homes" && 'Metric Values'[dimension] = "borough" )
+			VAR top5 = TOPN ( 5, boroughs, CALCULATE ( SUM ( 'Metric Values'[numerator] ) ), DESC )
+			RETURN DIVIDE ( SUMX ( top5, CALCULATE ( SUM ( 'Metric Values'[numerator] ) ) ), [Entire Homes Over 90 Nights] )
+		formatString: 0.0%
+		displayFolder: Headline
+
+	column metric_id
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: metric_id
+
+	column metric
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: metric
+
+	column version
+		dataType: int64
+		isHidden
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: version
+
+	column certified
+		dataType: boolean
+		isHidden
+		summarizeBy: none
+		sourceColumn: certified
+
+	column definition_hash
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: definition_hash
+
+	column dimension
+		dataType: string
+		summarizeBy: none
+		sourceColumn: dimension
+
+	column member
+		dataType: string
+		summarizeBy: none
+		sourceColumn: member
+		sortByColumn: member_order
+
+	column member_1
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: member_1
+
+	column member_2
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: member_2
+
+	column numerator
+		dataType: double
+		isHidden
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: numerator
+
+	column denominator
+		dataType: double
+		isHidden
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: denominator
+
+	column value
+		dataType: double
+		isHidden
+		formatString: #,0.00
+		summarizeBy: none
+		sourceColumn: value
+
+	column member_order
+		dataType: int64
+		isHidden
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: member_order
+
+	partition 'Metric Values' = m
+		mode: import
+		source = ```
+				let
+				    Source = Csv.Document(
+				        Web.Contents(BaseUrl, [RelativePath = "metric_values.csv"]),
+				        [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+				    ),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    // empty cells and R's NA arrive as text and would fail the type change: make them null
+				    #"Blanks to Null" = Table.TransformColumns(#"Promoted Headers", {}, each if _ = "" or _ = "NA" then null else _),
+				    // True/TRUE/true all become true: pandas writes True, R writes TRUE
+				    #"Booleans" = Table.TransformColumns(#"Blanks to Null", {{"certified", each if _ = null then null else Text.Lower(_)}}),
+				    #"Changed Types" = Table.TransformColumnTypes(
+				        #"Booleans",
+				        {
+				            {"metric_id", type text},
+				            {"metric", type text},
+				            {"version", Int64.Type},
+				            {"certified", type logical},
+				            {"definition_hash", type text},
+				            {"dimension", type text},
+				            {"member", type text},
+				            {"member_1", type text},
+				            {"member_2", type text},
+				            {"numerator", type number},
+				            {"denominator", type number},
+				            {"value", type number},
+				            {"member_order", Int64.Type}
+				        },
+				        "en-US"
+				    ),
+				    #"Filtered Rows" = #"Changed Types",
+				    Result = #"Filtered Rows"
+				in
+				    Result
+				```
+

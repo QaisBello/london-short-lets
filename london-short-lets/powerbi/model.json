@@ -1,0 +1,554 @@
+{
+  "tables": [
+    {
+      "name": "Metric Values",
+      "description": "The published metric table: one row per metric, dimension and member, with numerator and denominator. Every consumer (web page, Power BI, Excel) reads this same table.",
+      "columns": [
+        {
+          "name": "metric_id",
+          "type": "string",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "metric",
+          "type": "string",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "version",
+          "type": "int64",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "certified",
+          "type": "boolean",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "definition_hash",
+          "type": "string",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "dimension",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "member",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "member_1",
+          "type": "string",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "member_2",
+          "type": "string",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "numerator",
+          "type": "double",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "denominator",
+          "type": "double",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "value",
+          "type": "double",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "member_order",
+          "type": "int64",
+          "hidden": true,
+          "key": false
+        }
+      ]
+    },
+    {
+      "name": "Definitions",
+      "description": "The metric registry (metrics.yml): name, description, whether it is certified, version and definition hash.",
+      "columns": [
+        {
+          "name": "id",
+          "type": "string",
+          "hidden": true,
+          "key": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "certified",
+          "type": "boolean",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "version",
+          "type": "int64",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "format",
+          "type": "string",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "filter",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "why_not",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "definition_hash",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        }
+      ]
+    },
+    {
+      "name": "Quality Report",
+      "description": "Quality checks run before publishing. An error-level failure stops the build, so this table never contains one.",
+      "columns": [
+        {
+          "name": "id",
+          "type": "string",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "severity",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "expect",
+          "type": "int64",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "result",
+          "type": "int64",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "note",
+          "type": "string",
+          "hidden": true,
+          "key": false
+        }
+      ]
+    },
+    {
+      "name": "Sensitivity",
+      "description": "Entire homes modelled above 90 nights under three published review-rate assumptions.",
+      "columns": [
+        {
+          "name": "review_rate",
+          "type": "double",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "over_90_homes",
+          "type": "int64",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "short_let_entire_homes",
+          "type": "int64",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "share",
+          "type": "double",
+          "hidden": false,
+          "key": false
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "fromTable": "Metric Values",
+      "fromColumn": "metric_id",
+      "toTable": "Definitions",
+      "toColumn": "id",
+      "both": false
+    }
+  ],
+  "measures": [
+    {
+      "name": "Metric Value",
+      "table": "Metric Values",
+      "folder": "Generic",
+      "format": "#,0.###",
+      "dax": "VAR num = SUM ( 'Metric Values'[numerator] )\nVAR den = SUM ( 'Metric Values'[denominator] )\nRETURN IF ( ISBLANK ( den ), num, DIVIDE ( num, den ) )",
+      "description": "The one generic measure: counts and sums (no denominator) add up; ratios sum their numerators and denominators, then divide."
+    },
+    {
+      "name": "Metric Value (Percent)",
+      "table": "Metric Values",
+      "folder": "Generic",
+      "format": "0.0%",
+      "dax": "[Metric Value]",
+      "description": "The same value shown as a percentage, for ratio metrics."
+    },
+    {
+      "name": "Listings",
+      "table": "Metric Values",
+      "folder": "Headline",
+      "format": "#,0",
+      "dax": "CALCULATE ( [Metric Value], 'Metric Values'[metric_id] = \"listings\", 'Metric Values'[dimension] = \"total\" )",
+      "description": "Every listing in the snapshot."
+    },
+    {
+      "name": "Active Listings",
+      "table": "Metric Values",
+      "folder": "Headline",
+      "format": "#,0",
+      "dax": "CALCULATE ( [Metric Value], 'Metric Values'[metric_id] = \"active_listings\", 'Metric Values'[dimension] = \"total\" )",
+      "description": "Listings with a review in the last 12 months."
+    },
+    {
+      "name": "Occupancy Rate",
+      "table": "Metric Values",
+      "folder": "Headline",
+      "format": "0.0%",
+      "dax": "CALCULATE ( [Metric Value], 'Metric Values'[metric_id] = \"occupancy_rate\", 'Metric Values'[dimension] = \"total\" )",
+      "description": "Certified occupancy: modelled booked nights / 365, active listings."
+    },
+    {
+      "name": "Entire Homes Over 90 Nights",
+      "table": "Metric Values",
+      "folder": "Headline",
+      "format": "#,0",
+      "dax": "CALCULATE ( [Metric Value], 'Metric Values'[metric_id] = \"over_90_homes\", 'Metric Values'[dimension] = \"total\" )",
+      "description": "Active short-stay entire homes modelled above 90 nights."
+    },
+    {
+      "name": "Share Over 90 Nights",
+      "table": "Metric Values",
+      "folder": "Headline",
+      "format": "0.0%",
+      "dax": "CALCULATE ( [Metric Value], 'Metric Values'[metric_id] = \"over_90_share\", 'Metric Values'[dimension] = \"total\" )",
+      "description": "Over-90 entire homes as a share of active short-stay entire homes."
+    },
+    {
+      "name": "Over 90 Nights by Borough",
+      "table": "Metric Values",
+      "folder": "Breakdowns",
+      "format": "#,0",
+      "dax": "CALCULATE ( [Metric Value], 'Metric Values'[metric_id] = \"over_90_homes\", 'Metric Values'[dimension] = \"borough\" )",
+      "description": "Over-90 entire homes, borough rows only."
+    },
+    {
+      "name": "Share Over 90 by Borough",
+      "table": "Metric Values",
+      "folder": "Breakdowns",
+      "format": "0.0%",
+      "dax": "CALCULATE ( [Metric Value], 'Metric Values'[metric_id] = \"over_90_share\", 'Metric Values'[dimension] = \"borough\" )",
+      "description": "Over-90 share, borough rows only."
+    },
+    {
+      "name": "Active Listings by Borough",
+      "table": "Metric Values",
+      "folder": "Breakdowns",
+      "format": "#,0",
+      "dax": "CALCULATE ( [Metric Value], 'Metric Values'[metric_id] = \"active_listings\", 'Metric Values'[dimension] = \"borough\" )",
+      "description": "Active listings, borough rows only."
+    },
+    {
+      "name": "Occupancy by Borough",
+      "table": "Metric Values",
+      "folder": "Breakdowns",
+      "format": "0.0%",
+      "dax": "CALCULATE ( [Metric Value], 'Metric Values'[metric_id] = \"occupancy_rate\", 'Metric Values'[dimension] = \"borough\" )",
+      "description": "Certified occupancy, borough rows only."
+    },
+    {
+      "name": "Over 90 Nights by Host Size",
+      "table": "Metric Values",
+      "folder": "Breakdowns",
+      "format": "#,0",
+      "dax": "CALCULATE ( [Metric Value], 'Metric Values'[metric_id] = \"over_90_homes\", 'Metric Values'[dimension] = \"host_size\" )",
+      "description": "Over-90 entire homes by how many listings the host has."
+    },
+    {
+      "name": "Occupancy (Any Definition)",
+      "table": "Metric Values",
+      "folder": "Definitions",
+      "format": "0.0%",
+      "dax": "CALCULATE ( [Metric Value], 'Metric Values'[dimension] = \"total\", KEEPFILTERS ( CONTAINSSTRING ( 'Metric Values'[metric_id], \"occupancy\" ) ) )",
+      "description": "London's value for each occupancy definition, certified or not: put Definitions[name] on the axis."
+    },
+    {
+      "name": "Top 5 Borough Share",
+      "table": "Metric Values",
+      "folder": "Headline",
+      "format": "0.0%",
+      "dax": "VAR boroughs = FILTER ( ALL ( 'Metric Values'[member], 'Metric Values'[dimension], 'Metric Values'[metric_id] ),\n    'Metric Values'[metric_id] = \"over_90_homes\" && 'Metric Values'[dimension] = \"borough\" )\nVAR top5 = TOPN ( 5, boroughs, CALCULATE ( SUM ( 'Metric Values'[numerator] ) ), DESC )\nRETURN DIVIDE ( SUMX ( top5, CALCULATE ( SUM ( 'Metric Values'[numerator] ) ) ), [Entire Homes Over 90 Nights] )",
+      "description": "Share of London's over-90 entire homes in the five boroughs with the most."
+    },
+    {
+      "name": "Checks Passed",
+      "table": "Quality Report",
+      "folder": "Quality",
+      "format": "0",
+      "dax": "CALCULATE ( COUNTROWS ( 'Quality Report' ), 'Quality Report'[status] = \"pass\" ) + 0",
+      "description": "Quality checks that passed."
+    },
+    {
+      "name": "Checks Warned",
+      "table": "Quality Report",
+      "folder": "Quality",
+      "format": "0",
+      "dax": "CALCULATE ( COUNTROWS ( 'Quality Report' ), 'Quality Report'[status] = \"warn\" ) + 0",
+      "description": "Quality checks that published with a warning."
+    }
+  ],
+  "pages": [
+    {
+      "page": "One number",
+      "visuals": [
+        {
+          "type": "textbox",
+          "x": 24,
+          "y": 12,
+          "width": 1232,
+          "height": 52
+        },
+        {
+          "type": "card",
+          "x": 24,
+          "y": 76,
+          "width": 236,
+          "height": 96
+        },
+        {
+          "type": "card",
+          "x": 272,
+          "y": 76,
+          "width": 236,
+          "height": 96
+        },
+        {
+          "type": "card",
+          "x": 520,
+          "y": 76,
+          "width": 236,
+          "height": 96
+        },
+        {
+          "type": "card",
+          "x": 768,
+          "y": 76,
+          "width": 236,
+          "height": 96
+        },
+        {
+          "type": "card",
+          "x": 1016,
+          "y": 76,
+          "width": 236,
+          "height": 96
+        },
+        {
+          "type": "clusteredBarChart",
+          "x": 24,
+          "y": 184,
+          "width": 600,
+          "height": 524
+        },
+        {
+          "type": "tableEx",
+          "x": 640,
+          "y": 184,
+          "width": 616,
+          "height": 524
+        }
+      ]
+    },
+    {
+      "page": "Where",
+      "visuals": [
+        {
+          "type": "textbox",
+          "x": 24,
+          "y": 12,
+          "width": 1232,
+          "height": 52
+        },
+        {
+          "type": "clusteredBarChart",
+          "x": 24,
+          "y": 76,
+          "width": 600,
+          "height": 632
+        },
+        {
+          "type": "tableEx",
+          "x": 640,
+          "y": 76,
+          "width": 616,
+          "height": 632
+        }
+      ]
+    },
+    {
+      "page": "Metric explorer",
+      "visuals": [
+        {
+          "type": "textbox",
+          "x": 24,
+          "y": 12,
+          "width": 600,
+          "height": 52
+        },
+        {
+          "type": "slicer",
+          "x": 640,
+          "y": 8,
+          "width": 300,
+          "height": 64
+        },
+        {
+          "type": "slicer",
+          "x": 956,
+          "y": 8,
+          "width": 300,
+          "height": 64
+        },
+        {
+          "type": "clusteredBarChart",
+          "x": 24,
+          "y": 84,
+          "width": 820,
+          "height": 624
+        },
+        {
+          "type": "tableEx",
+          "x": 860,
+          "y": 84,
+          "width": 396,
+          "height": 624
+        }
+      ]
+    },
+    {
+      "page": "Who and how sure",
+      "visuals": [
+        {
+          "type": "textbox",
+          "x": 24,
+          "y": 12,
+          "width": 1232,
+          "height": 52
+        },
+        {
+          "type": "card",
+          "x": 24,
+          "y": 76,
+          "width": 300,
+          "height": 96
+        },
+        {
+          "type": "card",
+          "x": 336,
+          "y": 76,
+          "width": 300,
+          "height": 96
+        },
+        {
+          "type": "clusteredColumnChart",
+          "x": 648,
+          "y": 76,
+          "width": 608,
+          "height": 300
+        },
+        {
+          "type": "tableEx",
+          "x": 24,
+          "y": 184,
+          "width": 612,
+          "height": 192
+        },
+        {
+          "type": "tableEx",
+          "x": 24,
+          "y": 388,
+          "width": 1232,
+          "height": 320
+        }
+      ]
+    }
+  ],
+  "base_url": "https://raw.githubusercontent.com/QaisBello/london-short-lets/main/data/published/"
+}

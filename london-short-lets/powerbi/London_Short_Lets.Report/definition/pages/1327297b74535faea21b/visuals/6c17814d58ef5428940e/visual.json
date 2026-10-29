@@ -1,0 +1,113 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "6c17814d58ef5428940e",
+  "position": {
+    "x": 24,
+    "y": 184,
+    "z": 11,
+    "width": 612,
+    "height": 192,
+    "tabOrder": 11
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sensitivity"
+                    }
+                  },
+                  "Property": "label"
+                }
+              },
+              "queryRef": "Sensitivity.label",
+              "nativeQueryRef": "label",
+              "displayName": "Assumption"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sensitivity"
+                    }
+                  },
+                  "Property": "over_90_homes"
+                }
+              },
+              "queryRef": "Sensitivity.over_90_homes",
+              "nativeQueryRef": "over_90_homes",
+              "displayName": "Over 90 nights"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Sensitivity"
+                    }
+                  },
+                  "Property": "share"
+                }
+              },
+              "queryRef": "Sensitivity.share",
+              "nativeQueryRef": "share",
+              "displayName": "Share"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'How the count moves with the review-rate assumption'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

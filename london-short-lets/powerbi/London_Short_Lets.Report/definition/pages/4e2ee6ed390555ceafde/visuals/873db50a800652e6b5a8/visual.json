@@ -1,0 +1,143 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "873db50a800652e6b5a8",
+  "position": {
+    "x": 640,
+    "y": 184,
+    "z": 11,
+    "width": 616,
+    "height": 524,
+    "tabOrder": 11
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Definitions"
+                    }
+                  },
+                  "Property": "name"
+                }
+              },
+              "queryRef": "Definitions.name",
+              "nativeQueryRef": "name",
+              "displayName": "Metric"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Definitions"
+                    }
+                  },
+                  "Property": "certified"
+                }
+              },
+              "queryRef": "Definitions.certified",
+              "nativeQueryRef": "certified",
+              "displayName": "Certified"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Definitions"
+                    }
+                  },
+                  "Property": "version"
+                }
+              },
+              "queryRef": "Definitions.version",
+              "nativeQueryRef": "version",
+              "displayName": "Version"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Definitions"
+                    }
+                  },
+                  "Property": "definition_hash"
+                }
+              },
+              "queryRef": "Definitions.definition_hash",
+              "nativeQueryRef": "definition_hash",
+              "displayName": "Hash"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Definitions"
+                    }
+                  },
+                  "Property": "why_not"
+                }
+              },
+              "queryRef": "Definitions.why_not",
+              "nativeQueryRef": "why_not",
+              "displayName": "Why not certified"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'The metric registry (metrics.yml)'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

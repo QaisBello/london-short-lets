@@ -1,0 +1,11 @@
+id,description,severity,expect,result,status,note
+unique_listing,Each listing appears once,error,0,0,pass,
+borough_known,Every listing has a borough,error,0,0,pass,
+thirty_three_boroughs,Exactly 33 London boroughs (32 plus the City),error,33,33,pass,
+inside_london,Coordinates fall inside Greater London's bounding box,error,0,0,pass,
+has_calendar,Every listing has a calendar,error,0,0,pass,
+full_calendar,Every listing has 365 calendar nights from the day its calendar was scraped,warn,0,1,warn,
+reviews_rebuilt,"Reviews in the last 12 months, rebuilt from the raw review log, match the listings file",error,0,0,pass,
+model_reproduced,Modelled nights reproduce Inside Airbnb's own occupancy estimate for every listing,error,0,0,pass,
+availability_matches,Open calendar nights match the listings file's availability_365,warn,0,325,warn,
+minimum_nights_sane,"Minimum stay is between 1 and 1,125 nights (blank in the source for some listings: they are not counted as short lets)",warn,0,309,warn,

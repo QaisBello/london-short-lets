@@ -1,0 +1,128 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "f664dec9db6f5ce6ba06",
+  "position": {
+    "x": 860,
+    "y": 84,
+    "z": 11,
+    "width": 396,
+    "height": 624,
+    "tabOrder": 11
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Definitions"
+                    }
+                  },
+                  "Property": "name"
+                }
+              },
+              "queryRef": "Definitions.name",
+              "nativeQueryRef": "name",
+              "displayName": "Metric"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Definitions"
+                    }
+                  },
+                  "Property": "description"
+                }
+              },
+              "queryRef": "Definitions.description",
+              "nativeQueryRef": "description",
+              "displayName": "Definition"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Definitions"
+                    }
+                  },
+                  "Property": "filter"
+                }
+              },
+              "queryRef": "Definitions.filter",
+              "nativeQueryRef": "filter",
+              "displayName": "Filter"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Definitions"
+                    }
+                  },
+                  "Property": "definition_hash"
+                }
+              },
+              "queryRef": "Definitions.definition_hash",
+              "nativeQueryRef": "definition_hash",
+              "displayName": "Hash"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'The definition behind the chart'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

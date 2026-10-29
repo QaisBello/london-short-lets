@@ -1,0 +1,128 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "641bd5d5657958129143",
+  "position": {
+    "x": 24,
+    "y": 388,
+    "z": 12,
+    "width": 1232,
+    "height": 320,
+    "tabOrder": 12
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Quality Report"
+                    }
+                  },
+                  "Property": "description"
+                }
+              },
+              "queryRef": "Quality Report.description",
+              "nativeQueryRef": "description",
+              "displayName": "Check"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Quality Report"
+                    }
+                  },
+                  "Property": "severity"
+                }
+              },
+              "queryRef": "Quality Report.severity",
+              "nativeQueryRef": "severity",
+              "displayName": "Level"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Quality Report"
+                    }
+                  },
+                  "Property": "result"
+                }
+              },
+              "queryRef": "Quality Report.result",
+              "nativeQueryRef": "result",
+              "displayName": "Found"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Quality Report"
+                    }
+                  },
+                  "Property": "status"
+                }
+              },
+              "queryRef": "Quality Report.status",
+              "nativeQueryRef": "status",
+              "displayName": "Result"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Quality checks run before publishing'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

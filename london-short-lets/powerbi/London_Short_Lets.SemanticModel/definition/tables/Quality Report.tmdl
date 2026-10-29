@@ -1,0 +1,85 @@
+/// Quality checks run before publishing. An error-level failure stops the build, so this table never contains one.
+table 'Quality Report'
+
+	/// Quality checks that passed.
+	measure 'Checks Passed' = CALCULATE ( COUNTROWS ( 'Quality Report' ), 'Quality Report'[status] = "pass" ) + 0
+		formatString: 0
+		displayFolder: Quality
+
+	/// Quality checks that published with a warning.
+	measure 'Checks Warned' = CALCULATE ( COUNTROWS ( 'Quality Report' ), 'Quality Report'[status] = "warn" ) + 0
+		formatString: 0
+		displayFolder: Quality
+
+	column id
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: id
+
+	column description
+		dataType: string
+		summarizeBy: none
+		sourceColumn: description
+
+	column severity
+		dataType: string
+		summarizeBy: none
+		sourceColumn: severity
+
+	column expect
+		dataType: int64
+		isHidden
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: expect
+
+	column result
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: result
+
+	column status
+		dataType: string
+		summarizeBy: none
+		sourceColumn: status
+
+	column note
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: note
+
+	partition 'Quality Report' = m
+		mode: import
+		source = ```
+				let
+				    Source = Csv.Document(
+				        Web.Contents(BaseUrl, [RelativePath = "quality_report.csv"]),
+				        [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+				    ),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    // empty cells and R's NA arrive as text and would fail the type change: make them null
+				    #"Blanks to Null" = Table.TransformColumns(#"Promoted Headers", {}, each if _ = "" or _ = "NA" then null else _),
+				    // True/TRUE/true all become true: pandas writes True, R writes TRUE
+				    #"Booleans" = Table.TransformColumns(#"Blanks to Null", {}),
+				    #"Changed Types" = Table.TransformColumnTypes(
+				        #"Booleans",
+				        {
+				            {"id", type text},
+				            {"description", type text},
+				            {"severity", type text},
+				            {"expect", Int64.Type},
+				            {"result", Int64.Type},
+				            {"status", type text},
+				            {"note", type text}
+				        },
+				        "en-US"
+				    ),
+				    #"Filtered Rows" = #"Changed Types",
+				    Result = #"Filtered Rows"
+				in
+				    Result
+				```
+

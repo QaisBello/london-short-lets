@@ -1,0 +1,3 @@
+relationship b4c6b6f3-a06d-5c25-b008-933982f3feb0
+	fromColumn: 'Metric Values'.metric_id
+	toColumn: Definitions.id

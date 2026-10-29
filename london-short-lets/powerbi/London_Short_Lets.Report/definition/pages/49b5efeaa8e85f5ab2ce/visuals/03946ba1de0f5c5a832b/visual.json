@@ -1,0 +1,161 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "03946ba1de0f5c5a832b",
+  "position": {
+    "x": 640,
+    "y": 76,
+    "z": 11,
+    "width": 616,
+    "height": 632,
+    "tabOrder": 11
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metric Values"
+                    }
+                  },
+                  "Property": "member"
+                }
+              },
+              "queryRef": "Metric Values.member",
+              "nativeQueryRef": "member",
+              "displayName": "Borough"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metric Values"
+                    }
+                  },
+                  "Property": "Active Listings by Borough"
+                }
+              },
+              "queryRef": "Metric Values.Active Listings by Borough",
+              "nativeQueryRef": "Active Listings by Borough",
+              "displayName": "Active listings"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metric Values"
+                    }
+                  },
+                  "Property": "Occupancy by Borough"
+                }
+              },
+              "queryRef": "Metric Values.Occupancy by Borough",
+              "nativeQueryRef": "Occupancy by Borough",
+              "displayName": "Occupancy"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metric Values"
+                    }
+                  },
+                  "Property": "Over 90 Nights by Borough"
+                }
+              },
+              "queryRef": "Metric Values.Over 90 Nights by Borough",
+              "nativeQueryRef": "Over 90 Nights by Borough",
+              "displayName": "Over 90 nights"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metric Values"
+                    }
+                  },
+                  "Property": "Share Over 90 by Borough"
+                }
+              },
+              "queryRef": "Metric Values.Share Over 90 by Borough",
+              "nativeQueryRef": "Share Over 90 by Borough",
+              "displayName": "Share over 90"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Metric Values"
+                  }
+                },
+                "Property": "Over 90 Nights by Borough"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": false
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Every borough'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

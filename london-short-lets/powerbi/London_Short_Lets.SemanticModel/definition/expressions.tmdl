@@ -1,0 +1,2 @@
+/// Folder of published metric files from this repo (data/published). Point it at a local folder or another branch to test.
+expression BaseUrl = "https://raw.githubusercontent.com/QaisBello/london-short-lets/main/data/published/" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]

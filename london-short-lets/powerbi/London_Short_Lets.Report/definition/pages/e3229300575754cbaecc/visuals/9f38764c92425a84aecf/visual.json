@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "9f38764c92425a84aecf",
+  "position": {
+    "x": 24,
+    "y": 12,
+    "z": 0,
+    "width": 600,
+    "height": 52,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Metric explorer: pick a metric and a dimension",
+                    "textStyle": {
+                      "fontSize": "18pt",
+                      "color": "#13201B",
+                      "fontWeight": "bold"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,224 @@
+{
+  "snapshot": {
+    "city": "London",
+    "source": "Inside Airbnb",
+    "scraped": "18-22 September 2026"
+  },
+  "parameters": {
+    "review_rate": 0.5,
+    "avg_stay_nights": 4.6,
+    "occupancy_cap": 0.7,
+    "short_let_limit_nights": 90
+  },
+  "dimensions": {
+    "total": {
+      "column": "'London'",
+      "label": "All of London"
+    },
+    "borough": {
+      "column": "borough",
+      "label": "Borough"
+    },
+    "room_type": {
+      "column": "room_type",
+      "label": "Room type"
+    },
+    "host_size": {
+      "column": "host_size",
+      "label": "Host size",
+      "order": [
+        "1 listing",
+        "2-4 listings",
+        "5-19 listings",
+        "20+ listings"
+      ]
+    }
+  },
+  "metrics": [
+    {
+      "id": "listings",
+      "name": "Listings",
+      "description": "Every listing in the snapshot, whether or not anyone has stayed recently.",
+      "type": "count",
+      "numerator": null,
+      "denominator": null,
+      "expression": null,
+      "filter": null,
+      "format": null,
+      "certified": true,
+      "version": 1,
+      "changelog": null,
+      "why_not": null,
+      "definition_hash": "d33a1896cf"
+    },
+    {
+      "id": "active_listings",
+      "name": "Active listings",
+      "description": "Listings with at least one review in the last 12 months. Most dormant listings never get booked.",
+      "type": "count",
+      "numerator": null,
+      "denominator": null,
+      "expression": null,
+      "filter": "is_active",
+      "format": null,
+      "certified": true,
+      "version": 1,
+      "changelog": null,
+      "why_not": null,
+      "definition_hash": "dad03fbc68"
+    },
+    {
+      "id": "occupancy_rate",
+      "name": "Occupancy rate",
+      "description": "Modelled booked nights in the last 12 months, as a share of the year, for active listings.",
+      "type": "ratio",
+      "numerator": "sum(modelled_nights)",
+      "denominator": "365 * count(*)",
+      "expression": null,
+      "filter": "is_active",
+      "format": "percent",
+      "certified": true,
+      "version": 2,
+      "changelog": [
+        {
+          "version": 1,
+          "change": "Denominator counted every listing, including dormant ones. Gave 13.5% and made London look empty."
+        },
+        {
+          "version": 2,
+          "change": "Active listings only, so the rate describes listings that are actually trading."
+        }
+      ],
+      "why_not": null,
+      "definition_hash": "12d1a86a48"
+    },
+    {
+      "id": "nights_booked",
+      "name": "Nights booked (modelled)",
+      "description": "Modelled booked nights in the last 12 months, active listings.",
+      "type": "sum",
+      "numerator": null,
+      "denominator": null,
+      "expression": "modelled_nights",
+      "filter": "is_active",
+      "format": null,
+      "certified": true,
+      "version": 1,
+      "changelog": null,
+      "why_not": null,
+      "definition_hash": "9dfd600ae8"
+    },
+    {
+      "id": "entire_home_share",
+      "name": "Entire-home share",
+      "description": "Share of active listings that are a whole home or flat, the type the 90-night rule is about.",
+      "type": "ratio",
+      "numerator": "count(*) filter (where is_entire_home)",
+      "denominator": "count(*)",
+      "expression": null,
+      "filter": "is_active",
+      "format": "percent",
+      "certified": true,
+      "version": 1,
+      "changelog": null,
+      "why_not": null,
+      "definition_hash": "4ee78e7feb"
+    },
+    {
+      "id": "multi_listing_share",
+      "name": "Multi-listing host share",
+      "description": "Share of active listings run by a host with two or more London listings.",
+      "type": "ratio",
+      "numerator": "count(*) filter (where host_listings >= 2)",
+      "denominator": "count(*)",
+      "expression": null,
+      "filter": "is_active",
+      "format": "percent",
+      "certified": true,
+      "version": 1,
+      "changelog": null,
+      "why_not": null,
+      "definition_hash": "6a4ec4d4b3"
+    },
+    {
+      "id": "over_90_homes",
+      "name": "Entire homes likely over 90 nights",
+      "description": "Active entire homes, offered for short stays (minimum under 90 nights), modelled above 90 booked nights in the last 12 months.",
+      "type": "count",
+      "numerator": null,
+      "denominator": null,
+      "expression": null,
+      "filter": "is_active and is_entire_home and is_short_let and modelled_nights > 90",
+      "format": null,
+      "certified": true,
+      "version": 1,
+      "changelog": null,
+      "why_not": null,
+      "definition_hash": "3805cd67a6"
+    },
+    {
+      "id": "over_90_share",
+      "name": "Share of entire homes likely over 90 nights",
+      "description": "Over-90 entire homes as a share of active short-stay entire homes.",
+      "type": "ratio",
+      "numerator": "count(*) filter (where modelled_nights > 90)",
+      "denominator": "count(*)",
+      "expression": null,
+      "filter": "is_active and is_entire_home and is_short_let",
+      "format": "percent",
+      "certified": true,
+      "version": 1,
+      "changelog": null,
+      "why_not": null,
+      "definition_hash": "1a3c31e765"
+    },
+    {
+      "id": "occupancy_calendar_unavailable",
+      "name": "Occupancy: calendar unavailable",
+      "description": "Share of the next 365 days that are not open on the calendar, all listings.",
+      "type": "ratio",
+      "numerator": "sum(nights_unavailable)",
+      "denominator": "sum(calendar_nights)",
+      "expression": null,
+      "filter": null,
+      "format": "percent",
+      "certified": false,
+      "version": null,
+      "changelog": null,
+      "why_not": "The calendar cannot tell a booked night from one the host blocked, and it looks forward, not back. A dormant listing with a closed calendar looks fully booked.",
+      "definition_hash": "9e6057aeab"
+    },
+    {
+      "id": "occupancy_all_listings",
+      "name": "Occupancy: modelled, all listings",
+      "description": "Modelled booked nights as a share of the year, counting dormant listings too.",
+      "type": "ratio",
+      "numerator": "sum(modelled_nights)",
+      "denominator": "365 * count(*)",
+      "expression": null,
+      "filter": null,
+      "format": "percent",
+      "certified": false,
+      "version": null,
+      "changelog": null,
+      "why_not": "Half of all listings had no stay in a year. Counting them describes the size of the listing site, not how busy short lets are. This was version 1 of the certified metric.",
+      "definition_hash": "8c20a76d64"
+    },
+    {
+      "id": "occupancy_of_bookable",
+      "name": "Occupancy: booked share of bookable nights",
+      "description": "Modelled booked nights divided by modelled booked plus open nights, active listings.",
+      "type": "ratio",
+      "numerator": "sum(modelled_nights)",
+      "denominator": "sum(modelled_nights + nights_open)",
+      "expression": null,
+      "filter": "is_active",
+      "format": "percent",
+      "certified": false,
+      "version": null,
+      "changelog": null,
+      "why_not": "Mixes a backward-looking estimate (last 12 months) with a forward-looking calendar (next 12 months), so the two halves describe different years.",
+      "definition_hash": "b5ffa11bfc"
+    }
+  ]
+}

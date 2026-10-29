@@ -1,0 +1,80 @@
+{
+  "snapshot": {
+    "city": "London",
+    "source": "Inside Airbnb",
+    "scraped": "18-22 September 2026"
+  },
+  "parameters": {
+    "review_rate": 0.5,
+    "avg_stay_nights": 4.6,
+    "occupancy_cap": 0.7,
+    "short_let_limit_nights": 90
+  },
+  "listings": 91954.0,
+  "active_listings": 47121.0,
+  "occupancy": {
+    "occupancy_rate": 0.26360180857617216,
+    "occupancy_all_listings": 0.13508037520844995,
+    "occupancy_of_bookable": 0.33903089589256974,
+    "occupancy_calendar_unavailable": 0.5773493529775415
+  },
+  "entire_home_share": 0.7088559241102693,
+  "multi_listing_share": 0.6636107043568685,
+  "over_90_homes": 12550.0,
+  "over_90_share": 0.3775230875673074,
+  "short_let_entire_homes": 33243.0,
+  "top5_boroughs": [
+    {
+      "borough": "Westminster",
+      "over_90_homes": 2442.0
+    },
+    {
+      "borough": "Kensington and Chelsea",
+      "over_90_homes": 1224.0
+    },
+    {
+      "borough": "Camden",
+      "over_90_homes": 1168.0
+    },
+    {
+      "borough": "Tower Hamlets",
+      "over_90_homes": 788.0
+    },
+    {
+      "borough": "Islington",
+      "over_90_homes": 737.0
+    }
+  ],
+  "top5_share": 0.5066932270916334,
+  "over_90_hosts": 6354,
+  "over_90_from_20plus_hosts": 3172.0,
+  "over_90_from_20plus_share": 0.25274900398406375,
+  "sensitivity": [
+    {
+      "review_rate": 0.72,
+      "label": "72% of stays are reviewed (a figure attributed to Airbnb, unverified)",
+      "over_90_homes": 8490,
+      "short_let_entire_homes": 33243,
+      "share": 0.25539211262521433
+    },
+    {
+      "review_rate": 0.5,
+      "label": "50% of stays are reviewed (Inside Airbnb's default)",
+      "over_90_homes": 12550,
+      "short_let_entire_homes": 33243,
+      "share": 0.3775230875673074
+    },
+    {
+      "review_rate": 0.305,
+      "label": "30.5% of stays are reviewed (from a New York comparison)",
+      "over_90_homes": 16755,
+      "short_let_entire_homes": 33243,
+      "share": 0.5040158830430467
+    }
+  ],
+  "checks": {
+    "pass": 7,
+    "warn": 3,
+    "skipped": 0
+  }
+}
